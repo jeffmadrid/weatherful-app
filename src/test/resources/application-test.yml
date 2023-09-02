@@ -1,0 +1,4 @@
+open-weather-map:
+  url: http://localhost:${wiremock.server.port}
+  data:
+    api-key: test
