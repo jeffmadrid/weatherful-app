@@ -1,0 +1,27 @@
+open-weather-map:
+  url: http://api.openweathermap.org
+  data:
+    api-key: ${OPEN_WEATHER_MAP_API_KEY}
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    # url: jdbc:h2:file:/data/demo  TODO consider persisting data in a file
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings.trace: false
+      settings.web-allow-others: false
+
+logging:
+  level:
+    reactor.netty.http.client: DEBUG
