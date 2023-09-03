@@ -11,7 +11,7 @@ rate-limit:
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
-    # url: jdbc:h2:file:/data/demo  TODO consider persisting data in a file
+    # url: jdbc:h2:file:/data/demo  can be considered if persisting in a file is preferred
     driverClassName: org.h2.Driver
     username: sa
     password: password
@@ -24,9 +24,5 @@ spring:
     console:
       enabled: true
       path: /h2-console
-      settings.trace: false
-      settings.web-allow-others: false
-
-logging:
-  level:
-    reactor.netty.http.client: DEBUG
+      settings:
+        trace: false
