@@ -1,7 +1,7 @@
 package com.github.jeffmadrid.weatherfulapp.service.weather;
 
-import com.github.jeffmadrid.weatherfulapp.model.dto.WeatherResponse;
+import com.github.jeffmadrid.weatherfulapp.model.api.WeatherfulResponse;
 
 public interface WeatherService {
-    WeatherResponse getWeather(String city, String country);
+    WeatherfulResponse getWeather(String city, String country);
 }

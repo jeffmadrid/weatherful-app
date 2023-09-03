@@ -1,6 +1,7 @@
 package com.github.jeffmadrid.weatherfulapp.controller;
 
-import com.github.jeffmadrid.weatherfulapp.exception.TooManyRequestsException;
+import com.github.jeffmadrid.weatherfulapp.exception.CityNotFoundException;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -18,10 +19,16 @@ public class RestExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
-    @ExceptionHandler(TooManyRequestsException.class)
-    ProblemDetail handleTooManyRequestsException(TooManyRequestsException e) {
+    @ExceptionHandler(ValidationException.class)
+    ProblemDetail handleValidationException(ValidationException e) {
         log.info("Expected exception {} is handled. {}", e.getClass(), e.getMessage(), e);
-        return ProblemDetail.forStatusAndDetail(HttpStatus.TOO_MANY_REQUESTS, e.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+
+    @ExceptionHandler(CityNotFoundException.class)
+    ProblemDetail handleCityNotFoundException(CityNotFoundException e) {
+        log.info("Expected exception {} is handled. {}", e.getClass(), e.getMessage(), e);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

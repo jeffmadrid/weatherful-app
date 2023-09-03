@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
+
 @Data
 @IdClass(WeatherDataId.class)
 @Entity
@@ -20,4 +22,5 @@ public class WeatherDataEntity {
     @Id
     private String country;
     private String rawData;
+    private OffsetDateTime updatedDate = OffsetDateTime.now();
 }

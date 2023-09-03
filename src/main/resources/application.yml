@@ -2,6 +2,7 @@ open-weather-map:
   url: http://api.openweathermap.org
   data:
     api-key: ${OPEN_WEATHER_MAP_API_KEY}
+    fresh-data-duration-in-minutes: 30
 
 spring:
   datasource:

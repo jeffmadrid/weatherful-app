@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface WeatherDataRepository extends CrudRepository<WeatherDataEntity, WeatherDataId> {
-    Optional<WeatherDataEntity> findByCityAndCountryIgnoreCase(String city, String country);
+    Optional<WeatherDataEntity> findByCityIgnoreCaseAndCountryIgnoreCase(String city, String country);
 }

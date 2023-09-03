@@ -2,6 +2,7 @@ package com.github.jeffmadrid.weatherfulapp.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.jeffmadrid.weatherfulapp.model.api.WeatherfulResponse;
 import com.github.jeffmadrid.weatherfulapp.model.dto.WeatherResponse;
 import com.github.jeffmadrid.weatherfulapp.model.entity.WeatherDataEntity;
 import org.mapstruct.Mapper;
@@ -21,6 +22,11 @@ public abstract class WeatherMapper {
     @Mapping(target = "country", source = "source.sys.country")
     public abstract WeatherDataEntity toEntity(WeatherResponse source);
 
+    @Mapping(target = "city", source = "source.name")
+    @Mapping(target = "country", source = "source.sys.country")
+    @Mapping(target = "weather.description", source = "source", qualifiedByName = "fromWeatherDescriptionToString")
+    public abstract WeatherfulResponse toApiResponse(WeatherResponse source);
+
     @Named("fromWeatherResponseToString")
     String fromWeatherResponseToString(WeatherResponse source) throws JsonProcessingException {
         if (Objects.nonNull(source)) {
@@ -28,4 +34,14 @@ public abstract class WeatherMapper {
         }
         return null;
     }
+
+    @Named("fromWeatherDescriptionToString")
+    String fromWeatherDescriptionToString(WeatherResponse source) {
+        if (Objects.nonNull(source) && Objects.nonNull(source.weathers()) && !source.weathers().isEmpty()) {
+            return source.weathers().get(0).description();
+        }
+        return null;
+    }
+
+
 }
