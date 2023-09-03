@@ -28,6 +28,8 @@ curl --request GET \
 - Spring Security with Filters for API Key validation before it reaches the `Controller` layer.
 - Spring HTTP Interface are used to generate `interfaces` to communicate with external service. `WebClient` is used but in a blocking/non-reactive way.
 - The API Key to call this service is stored in the HTTP header with the name `X-Api-Key`.
+- Queries for `city` and `country` are case-insensitive.
+- Flyway script is used for database migration of Relational Tables and insertion of API Keys.
 
 ## Library Usage
 - Spring Data JPA
