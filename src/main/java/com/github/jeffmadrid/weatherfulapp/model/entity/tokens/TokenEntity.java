@@ -15,11 +15,11 @@ import java.time.OffsetDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Token")
+@Table(name = "token")
 public class TokenEntity {
     @Id
     private String token;
     @Enumerated(EnumType.STRING)
     private TokenType type = TokenType.API_KEY;
-    private OffsetDateTime createdDate;
+    private OffsetDateTime createdDate = OffsetDateTime.now();
 }

@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 @IdClass(TokenAccessId.class)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "TokenAccess")
+@Table(name = "token_access")
 public class TokenAccessEntity {
     @Id
     private String token;

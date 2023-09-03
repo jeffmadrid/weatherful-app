@@ -22,9 +22,6 @@ public class SecurityConfig {
                                            AuthorizationFilter authorizationFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(requests -> requests
-                // TODO double check this one haven't got this to work
-//                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-                .requestMatchers(new AntPathRequestMatcher("/h2-console")).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

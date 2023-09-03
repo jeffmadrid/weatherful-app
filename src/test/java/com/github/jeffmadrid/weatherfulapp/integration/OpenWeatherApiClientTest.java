@@ -1,6 +1,6 @@
 package com.github.jeffmadrid.weatherfulapp.integration;
 
-import com.github.jeffmadrid.weatherfulapp.model.dto.WeatherResponse;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.jeffmadrid.weatherfulapp.service.weather.OpenWeatherApiClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.contract.spec.internal.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import stubs.OpenWeatherMapStub;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -32,9 +31,9 @@ public class OpenWeatherApiClientTest extends AbstractIntegrationTest {
                 .withStatus(HttpStatus.OK))
         );
 
-        WeatherResponse response = openWeatherApiClient.getWeatherByCityAndCountry("Zocca,IT", "test");
+        JsonNode node = openWeatherApiClient.getWeatherByCityAndCountry("Zocca,IT", "test");
 
-        assertThat(response).isEqualTo(OpenWeatherMapStub.stubWeatherResponse());
+        assertThat(node.get("name").asText()).isEqualTo("Zocca");
     }
 
     @ParameterizedTest

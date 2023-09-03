@@ -1,9 +1,10 @@
 CREATE TABLE IF NOT EXISTS weather_data
 (
+    id BIGINT PRIMARY KEY,
     city VARCHAR(255) NOT NULL,
-    country VARCHAR(10) NOT NULL,
-    raw_data VARCHAR(1000000) NOT NULL,
-    updated_date TIMESTAMP WITH TIME ZONE,
-
-    CONSTRAINT city_country PRIMARY KEY (city, country)
+    country VARCHAR(5) NOT NULL,
+    weather_description VARCHAR(255) NOT NULL,
+    updated_date TIMESTAMP WITH TIME ZONE NOT NULL
 );
+
+CREATE UNIQUE INDEX weather_data ON weather_data(city, country);
