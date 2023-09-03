@@ -40,6 +40,9 @@ public class AuthenticationService {
 
     public boolean checkAndPerformAuthorization(HttpServletRequest request) {
         String apiKey = request.getHeader(Constants.API_KEY_HEADER);
+        if (apiKey == null) {
+            return false;
+        }
 
         int attemptCount = tokenAccessRepository.countByTokenAndAccessedDateAfter(apiKey,
             OffsetDateTime.now().minusMinutes(rateLimitDurationInMinutes));
