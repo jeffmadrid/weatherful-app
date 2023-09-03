@@ -2,9 +2,7 @@
 
 ## Implementation
 
-### Spring Security for API Key validation
-
-### Bucket4J for Rate Limit
+### Spring Security with Filters for API Key validation
 
 ## Future considerations
 

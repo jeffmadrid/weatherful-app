@@ -28,7 +28,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("com.bucket4j:bucket4j-core:8.3.0")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     implementation("org.flywaydb:flyway-core")
 

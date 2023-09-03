@@ -1,23 +1,55 @@
 package com.github.jeffmadrid.weatherfulapp.security;
 
 import com.github.jeffmadrid.weatherfulapp.Constants;
+import com.github.jeffmadrid.weatherfulapp.model.entity.tokens.TokenAccessEntity;
+import com.github.jeffmadrid.weatherfulapp.repository.TokenAccessRepository;
+import com.github.jeffmadrid.weatherfulapp.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.authentication.BadCredentialsException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.OffsetDateTime;
 
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class AuthenticationService {
 
-    private static final List<String> PERMITTED_API_KEY = List.of("AK001", "AK002", "AK003", "AK004", "AK005");
+    private final TokenRepository tokenRepository;
+    private final TokenAccessRepository tokenAccessRepository;
 
-    public static Authentication getAuthentication(HttpServletRequest request) {
+    @Value("${rate-limit.capacity:5}")
+    private int rateLimitCapacity;
+
+    @Value("${rate-limit.duration-in-minutes:60}")
+    private int rateLimitDurationInMinutes;
+
+    public Authentication getAuthentication(HttpServletRequest request) {
         String apiKey = request.getHeader(Constants.API_KEY_HEADER);
-        if (apiKey == null || !PERMITTED_API_KEY.contains(apiKey)) {
-            throw new BadCredentialsException("Invalid, empty or null API Key");
+
+        if (apiKey == null || tokenRepository.findById(apiKey).isEmpty()) {
+            log.info("Invalid, empty or null API Key");
+            return null;
         }
         return new ApiKeyAuthentication(apiKey, AuthorityUtils.NO_AUTHORITIES);
     }
 
+    public boolean checkAndPerformAuthorization(HttpServletRequest request) {
+        String apiKey = request.getHeader(Constants.API_KEY_HEADER);
+
+        int attemptCount = tokenAccessRepository.countByTokenAndAccessedDateAfter(apiKey,
+            OffsetDateTime.now().minusMinutes(rateLimitDurationInMinutes));
+
+        if (attemptCount > rateLimitCapacity) {
+            log.info("Too many requests sent.");
+            return false;
+        }
+
+        tokenAccessRepository.save(new TokenAccessEntity(apiKey, OffsetDateTime.now()));
+        return true;
+    }
 }
