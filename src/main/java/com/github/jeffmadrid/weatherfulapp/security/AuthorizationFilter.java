@@ -16,12 +16,12 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthorizationFilter extends OncePerRequestFilter {
 
-    private final AuthenticationService authenticationService;
+    private final AuthService authService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if (isPathRequestMatch(request) && !authenticationService.checkAndPerformAuthorization(request)) {
+        if (isPathRequestMatch(request) && !authService.checkAndPerformAuthorization(request)) {
             SecurityContextHolder.getContext().setAuthentication(null);
         }
         filterChain.doFilter(request, response);

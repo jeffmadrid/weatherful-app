@@ -27,7 +27,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class WeatherControllerTest extends AbstractIntegrationTest {
+public class WeatherControllerIntegrationTest extends AbstractIntegrationTest {
     private static final String API_KEY = "test-api-key";
 
     @Autowired
@@ -65,7 +65,7 @@ public class WeatherControllerTest extends AbstractIntegrationTest {
             ).andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.country").value("IT"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.city").value("Zocca"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.weather.description").value("moderate rain"));
+            .andExpect(MockMvcResultMatchers.jsonPath("$.weatherDescription").value("moderate rain"));
     }
 
     @ParameterizedTest

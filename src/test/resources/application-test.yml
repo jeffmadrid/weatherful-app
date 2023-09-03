@@ -2,3 +2,7 @@ open-weather-map:
   url: http://localhost:${wiremock.server.port}
   data:
     api-key: test
+
+rate-limit:
+  capacity: 100
+  duration-in-minutes: 1

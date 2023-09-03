@@ -4,6 +4,10 @@ open-weather-map:
     api-key: ${OPEN_WEATHER_MAP_API_KEY}
     fresh-data-duration-in-minutes: 30
 
+rate-limit:
+  capacity: 5
+  duration-in-minutes: 60
+
 spring:
   datasource:
     url: jdbc:h2:mem:testdb

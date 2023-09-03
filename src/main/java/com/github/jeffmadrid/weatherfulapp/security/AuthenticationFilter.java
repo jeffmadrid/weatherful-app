@@ -17,13 +17,13 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
 
-    private final AuthenticationService authenticationService;
+    private final AuthService authService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         if (isPathRequestMatch(request)) {
-            Authentication authentication = authenticationService.getAuthentication(request);
+            Authentication authentication = authService.getAuthentication(request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);

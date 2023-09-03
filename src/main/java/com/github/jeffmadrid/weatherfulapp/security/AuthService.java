@@ -17,15 +17,15 @@ import java.time.OffsetDateTime;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AuthenticationService {
+public class AuthService {
 
     private final TokenRepository tokenRepository;
     private final TokenAccessRepository tokenAccessRepository;
 
-    @Value("${rate-limit.capacity:5}")
+    @Value("${rate-limit.capacity}")
     private int rateLimitCapacity;
 
-    @Value("${rate-limit.duration-in-minutes:60}")
+    @Value("${rate-limit.duration-in-minutes}")
     private int rateLimitDurationInMinutes;
 
     public Authentication getAuthentication(HttpServletRequest request) {
@@ -47,7 +47,7 @@ public class AuthenticationService {
         int attemptCount = tokenAccessRepository.countByTokenAndAccessedDateAfter(apiKey,
             OffsetDateTime.now().minusMinutes(rateLimitDurationInMinutes));
 
-        if (attemptCount > rateLimitCapacity) {
+        if (attemptCount >= rateLimitCapacity) {
             log.info("Too many requests sent.");
             return false;
         }

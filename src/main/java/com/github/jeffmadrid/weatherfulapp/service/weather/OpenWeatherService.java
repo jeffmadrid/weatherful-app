@@ -37,21 +37,14 @@ public class OpenWeatherService implements WeatherService {
     @Transactional
     @Override
     public WeatherfulResponse getWeather(String city, String country) {
-        return weatherDataRepository.findByCityIgnoreCaseAndCountryIgnoreCase(city, country)
+        WeatherDataEntity entity = weatherDataRepository.findByCityIgnoreCaseAndCountryIgnoreCase(city, country)
             .filter(this::isDataFresh)
-            .map(this::mapToWeatherResponse)
-            .orElseGet(() -> mapToWeatherResponse(getWeatherFromExternalAndSaveToDb(city, country)));
+            .orElseGet(() -> getWeatherFromExternalAndSaveToDb(city, country));
+        return mapToWeatherResponse(entity);
     }
 
     private boolean isDataFresh(WeatherDataEntity entity) {
         return entity.getUpdatedDate().plusMinutes(freshDataDuration).isAfter(OffsetDateTime.now());
-    }
-
-    private WeatherfulResponse mapToWeatherResponse(WeatherDataEntity entity) {
-        return WeatherfulResponse.builder()
-            .city(entity.getCity())
-            .country(entity.getCountry())
-            .weatherDescription(entity.getWeatherDescription()).build();
     }
 
     private WeatherDataEntity getWeatherFromExternalAndSaveToDb(String city, String country) {
@@ -77,6 +70,13 @@ public class OpenWeatherService implements WeatherService {
             .weatherDescription(jsonNode.get(WEATHER_PATH).get(0).get(DESCRIPTION_PATH).asText())
             .updatedDate(OffsetDateTime.now())
             .build();
+    }
+
+    private WeatherfulResponse mapToWeatherResponse(WeatherDataEntity entity) {
+        return WeatherfulResponse.builder()
+            .city(entity.getCity())
+            .country(entity.getCountry())
+            .weatherDescription(entity.getWeatherDescription()).build();
     }
 
 }
